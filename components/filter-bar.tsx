@@ -83,7 +83,7 @@ export function FilterBar({
       <div className="text-muted-foreground flex h-7 items-center gap-2 text-sm">
         <span>
           {active ? `${count} of ${total}` : total} {noun}
-          {(active ? count : total) === 1 ? "" : "s"}
+          {total === 1 ? "" : "s"}
         </span>
         {active && (
           <Button variant="ghost" size="sm" className="h-7 px-2" onClick={onClear}>

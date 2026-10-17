@@ -85,11 +85,19 @@ USE THE DESIGN SYSTEM (never redefine it):
 - Colors: var(--bg), var(--surface), var(--border), var(--fg), var(--muted), var(--accent), var(--accent-contrast)
 - Shape/size: var(--radius), var(--radius-sm), var(--container)
 - Classes: .container (wrap each section's content in one), .section (padding — already on the <section>), .eyebrow, .h1 .h2 .h3 .lead .muted, .btn and .btn.accent, .card, .tag, .grid-2 .grid-3
+- Static helpers: .text-gradient (gradient text), .bg-gradient-animated (soft moving gradient background), .blob (absolutely-positioned blurred color circle for decoration — set size/color/position in your scoped CSS), .marquee > .marquee-track (infinite horizontal scroll; put the items in the track TWICE, the second copy wrapped in an element with aria-hidden="true").
 - Extra CSS allowed only inside the section's <style>, every selector scoped under .cmp-<type> so sections never clash.
+
+MOTION (required — every page must feel alive, like a premium agency site, but stay tasteful):
+- On-load entrance (hero / above the fold): .anim-up .anim-down .anim-left .anim-right .anim-fade .anim-scale .anim-zoom .anim-blur, timed with .delay-1 … .delay-5; .stagger on a parent animates its children in sequence.
+- Scroll reveal (every section below the hero): .reveal .reveal-fade .reveal-left .reveal-right .reveal-zoom .reveal-blur on blocks, .reveal-stagger on grids/lists so items cascade in. Vary them: alternate left/right for image+text rows, zoom for stats, stagger for card grids.
+- Hover: .hover-lift or .hover-tilt or .hover-glow on cards, .hover-zoom on image wrappers, .link-underline on text links, .hover-arrow on links/buttons containing <span class="arrow">→</span>, add .shine to primary .btn.accent buttons.
+- Ambient (decoration only, never on body text): .float / .float-slow on decorative shapes or hero images, .spin-slow on decorative rings, .pulse-ring on a key CTA or status dot, .text-gradient.animated on one or two hero words, .bg-gradient-animated on the hero or CTA background, .marquee for logo strips / tags / testimonials.
+- Typical recipe: hero = .bg-gradient-animated + a couple of .blob.float shapes + headline .anim-blur + lead .anim-up.delay-2 + buttons .anim-up.delay-3; then each section uses a reveal class and its cards use a hover class.
 
 RENDERING (critical — never ship hidden content):
 - Fully static. No <script>, no JavaScript, no CSS frameworks.
-- The page must be completely visible with JavaScript disabled. NEVER use opacity:0, visibility:hidden, display:none, or off-screen transforms as a default state. No scroll-reveal patterns. Any animation must be pure CSS that auto-plays to a fully visible end state.
+- The page must be completely visible with JavaScript disabled. NEVER write your own opacity:0, visibility:hidden, display:none or off-screen-transform default states, and never write your own reveal/entrance keyframes — use ONLY the motion classes above, which are built to always end fully visible and to switch off under prefers-reduced-motion. Custom @keyframes in a section are allowed only for decorative, always-visible elements.
 
 CONTENT:
 - Reuse the original image URLs provided; do not invent image paths (use CSS/gradients/inline SVG for decoration).

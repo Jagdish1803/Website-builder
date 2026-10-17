@@ -26,7 +26,15 @@ Open http://localhost:3000, paste a URL (e.g. `logicloomweb.com`), hit Rebuild.
   and save / update. `/compose?site=<id>` edits an existing site.
 
 The UI uses [shadcn/ui](https://ui.shadcn.com) components (`components/ui`, config in
-`components.json`) on Tailwind CSS v4, with light/dark themes.
+`components.json`) on Tailwind CSS v4, with light/dark themes. Animation uses
+[Motion](https://motion.dev) (Framer Motion); reusable effects live in `components/fx`
+(text reveal, magnetic button, spotlight/tilt card, number ticker, marquee, scroll
+progress, segmented filter, parallax background), plus drag-to-reorder in the
+Composer. Everything respects the OS "reduce motion" setting.
+
+Generated pages get their motion from the CSS-only system in
+`app/lib/design-system.ts` (entrance, scroll-reveal, hover, ambient and marquee
+classes), which the build prompt tells Claude to use on every section.
 
 ## How it works
 

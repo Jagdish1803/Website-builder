@@ -8,6 +8,7 @@ import {
   ArrowUpIcon,
   CopyPlusIcon,
   EyeIcon,
+  GripVerticalIcon,
   LayersIcon,
   Loader2Icon,
   MoreHorizontalIcon,
@@ -17,11 +18,14 @@ import {
   Trash2Icon,
   XIcon,
 } from "lucide-react";
+import { AnimatePresence, motion, Reorder } from "motion/react";
 import { toast } from "sonner";
 
 import { DevicePreview } from "@/components/device-preview";
 import { EmptyState } from "@/components/empty-state";
 import { FilterBar, FilterSearch, FilterSelect } from "@/components/filter-bar";
+import { Segmented } from "@/components/fx/segmented";
+import { ease, spring } from "@/components/motion";
 import { PageHeader } from "@/components/page-header";
 import { PageThumb } from "@/components/page-thumb";
 import {
@@ -57,13 +61,19 @@ const SORTS = [
   { value: "type", label: "By type" },
 ];
 
+// The same section may appear on a page twice, so each entry gets its own key
+// (Reorder needs a stable identity per row).
+type Entry = { key: string; id: string };
+let seq = 0;
+const entry = (id: string): Entry => ({ key: `${id}-${++seq}`, id });
+
 export function Composer() {
   const router = useRouter();
   const editId = useSearchParams().get("site");
 
   const [comps, setComps] = useState<ComponentMeta[] | null>(null);
   const [editing, setEditing] = useState<Site | null>(null);
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<Entry[]>([]);
   const [title, setTitle] = useState("");
   const [saving, setSaving] = useState<"update" | "new" | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -92,7 +102,7 @@ export function Composer() {
     api<{ site: Site }>(`/api/sites/${editId}`)
       .then(({ site }) => {
         setEditing(site);
-        setSelected(site.componentIds);
+        setSelected(site.componentIds.map(entry));
         setTitle(site.title);
       })
       .catch(() => toast.error("That site no longer exists"));
@@ -104,8 +114,8 @@ export function Composer() {
     const counts = new Map<string, number>();
     for (const c of comps ?? []) counts.set(c.type, (counts.get(c.type) ?? 0) + 1);
     return [
-      { value: "all", label: "All types" },
-      ...[...counts].sort(([a], [b]) => a.localeCompare(b)).map(([t, n]) => ({ value: t, label: `${t} (${n})` })),
+      { value: "all", label: "All", count: comps?.length ?? 0 },
+      ...[...counts].sort(([a], [b]) => a.localeCompare(b)).map(([t, n]) => ({ value: t, label: t, count: n })),
     ];
   }, [comps]);
 
@@ -132,16 +142,16 @@ export function Composer() {
   };
 
   // Only ids that still exist in the library count toward the page.
-  const picked = selected.filter((id) => byId.has(id));
+  const picked = selected.filter((e) => byId.has(e.id)).map((e) => e.id);
   const usage = useMemo(() => {
     const m = new Map<string, number>();
-    for (const id of selected) m.set(id, (m.get(id) ?? 0) + 1);
+    for (const { id } of selected) m.set(id, (m.get(id) ?? 0) + 1);
     return m;
   }, [selected]);
 
-  const add = (id: string) => setSelected((s) => [...s, id]);
+  const add = (id: string) => setSelected((s) => [...s, entry(id)]);
   const addAll = () => {
-    setSelected((s) => [...s, ...filtered.map((c) => c.id)]);
+    setSelected((s) => [...s, ...filtered.map((c) => entry(c.id))]);
     toast.success(`Added ${filtered.length} sections`);
   };
   const removeAt = (i: number) => setSelected((s) => s.filter((_, idx) => idx !== i));
@@ -190,7 +200,7 @@ export function Composer() {
     try {
       await api(`/api/components/${c.id}`, { method: "DELETE" });
       setComps((list) => list?.filter((x) => x.id !== c.id) ?? null);
-      setSelected((s) => s.filter((id) => id !== c.id));
+      setSelected((s) => s.filter((e) => e.id !== c.id));
       toast.success("Section deleted", { description: "Sites that used it will skip it." });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Delete failed");
@@ -249,7 +259,6 @@ export function Composer() {
             <>
               <FilterBar count={filtered.length} total={comps.length} noun="section" active={active} onClear={clearFilters}>
                 <FilterSearch value={query} onChange={setQuery} placeholder="Search sections…" />
-                <FilterSelect value={type} onChange={setType} options={typeOptions} label="Type" />
                 <FilterSelect value={source} onChange={setSource} options={sourceOptions} label="Source" />
                 <FilterSelect value={sort} onChange={setSort} options={SORTS} label="Sort" className="w-full sm:w-36" />
                 {active && filtered.length > 0 && (
@@ -258,6 +267,7 @@ export function Composer() {
                   </Button>
                 )}
               </FilterBar>
+              <Segmented value={type} onChange={setType} options={typeOptions} label="Section type" />
 
               {filtered.length === 0 ? (
                 <EmptyState
@@ -270,26 +280,56 @@ export function Composer() {
                   }
                 />
               ) : (
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                  {filtered.map((c) => {
+                <motion.div layout className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                  <AnimatePresence mode="popLayout">
+                  {filtered.map((c, i) => {
                     const used = usage.get(c.id) ?? 0;
                     return (
-                      <Card key={c.id} className="group gap-0 overflow-hidden py-0">
+                      <motion.div
+                        key={c.id}
+                        layout
+                        initial={{ opacity: 0, y: 20, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease, delay: Math.min(i, 9) * 0.04 } }}
+                        exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.18 } }}
+                      >
+                      <Card className="group hover:border-foreground/20 h-full gap-0 overflow-hidden py-0 transition-[box-shadow,border-color,transform] duration-300 hover:-translate-y-0.5 hover:shadow-lg">
                         <button
                           type="button"
                           onClick={() => setInspect(c)}
                           className="relative block border-b text-left"
                           aria-label={`Preview ${c.label}`}
                         >
-                          <PageThumb src={`/c/${c.id}`} title={c.label} scale={0.2} />
+                          <PageThumb
+                            src={`/c/${c.id}`}
+                            title={c.label}
+                            scale={0.2}
+                            className="transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                          />
                           <span className="bg-background/0 group-hover:bg-background/40 absolute inset-0 flex items-center justify-center transition-colors">
                             <span className="bg-background flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
                               <EyeIcon className="size-3.5" /> Preview
                             </span>
                           </span>
-                          {used > 0 && (
-                            <Badge className="absolute top-2 right-2">On page{used > 1 ? ` ×${used}` : ""}</Badge>
-                          )}
+                          <AnimatePresence>
+                            {used > 0 && (
+                              <motion.span
+                                className="absolute top-2 right-2"
+                                initial={{ scale: 0, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0, opacity: 0 }}
+                                transition={spring}
+                              >
+                                <Badge>
+                                  On page
+                                  {used > 1 && (
+                                    <motion.span key={used} initial={{ scale: 1.6 }} animate={{ scale: 1 }} transition={spring}>
+                                      ×{used}
+                                    </motion.span>
+                                  )}
+                                </Badge>
+                              </motion.span>
+                            )}
+                          </AnimatePresence>
                         </button>
                         <div className="flex items-start gap-2 p-3">
                           <div className="min-w-0 flex-1 space-y-1">
@@ -302,9 +342,11 @@ export function Composer() {
                             </p>
                           </div>
                           <div className="flex shrink-0 gap-1">
-                            <Button size="icon-sm" variant="outline" aria-label={`Add ${c.label}`} onClick={() => add(c.id)}>
-                              <PlusIcon />
-                            </Button>
+                            <motion.div whileTap={{ scale: 0.85 }} whileHover={{ scale: 1.08 }}>
+                              <Button size="icon-sm" variant="outline" aria-label={`Add ${c.label}`} onClick={() => add(c.id)}>
+                                <PlusIcon />
+                              </Button>
+                            </motion.div>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
                                 <Button size="icon-sm" variant="ghost" aria-label="Section actions">
@@ -323,9 +365,11 @@ export function Composer() {
                           </div>
                         </div>
                       </Card>
+                      </motion.div>
                     );
                   })}
-                </div>
+                  </AnimatePresence>
+                </motion.div>
               )}
             </>
           )}
@@ -334,9 +378,23 @@ export function Composer() {
         {/* Page outline */}
         <Card className="gap-4 lg:sticky lg:top-20">
           <CardHeader>
-            <CardTitle>Your page</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              Your page
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.span
+                  key={picked.length}
+                  initial={{ y: -10, opacity: 0, scale: 0.6 }}
+                  animate={{ y: 0, opacity: 1, scale: 1 }}
+                  exit={{ y: 10, opacity: 0, scale: 0.6 }}
+                  transition={spring}
+                  className="bg-brand text-brand-foreground inline-flex min-w-6 justify-center rounded-full px-1.5 text-xs leading-5 tabular-nums"
+                >
+                  {picked.length}
+                </motion.span>
+              </AnimatePresence>
+            </CardTitle>
             <CardDescription>
-              {picked.length === 0 ? "Add sections from the library." : `${picked.length} section${picked.length === 1 ? "" : "s"}, top to bottom.`}
+              {picked.length === 0 ? "Add sections from the library." : "Drag to reorder, top to bottom."}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -345,12 +403,30 @@ export function Composer() {
               <Input id="page-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Composed page" />
             </div>
             {selected.length > 0 && (
-              <ol className="max-h-[50vh] space-y-1.5 overflow-y-auto pr-1">
-                {selected.map((id, i) => {
-                  const c = byId.get(id);
+              <Reorder.Group
+                as="ol"
+                axis="y"
+                values={selected}
+                onReorder={setSelected}
+                layoutScroll
+                className="max-h-[50vh] space-y-1.5 overflow-y-auto pr-1"
+              >
+                <AnimatePresence initial={false}>
+                {selected.map((e, i) => {
+                  const c = byId.get(e.id);
                   return (
-                    <li key={`${id}-${i}`} className="bg-muted/40 flex items-center gap-2 rounded-lg border p-2 text-sm">
-                      <span className="text-muted-foreground w-5 shrink-0 text-center text-xs tabular-nums">{i + 1}</span>
+                    <Reorder.Item
+                      key={e.key}
+                      value={e}
+                      initial={{ opacity: 0, x: 24, height: 0 }}
+                      animate={{ opacity: 1, x: 0, height: "auto" }}
+                      exit={{ opacity: 0, x: -24, height: 0, marginTop: 0 }}
+                      transition={{ duration: 0.3, ease }}
+                      whileDrag={{ scale: 1.03, boxShadow: "0 12px 30px rgb(0 0 0 / 0.15)", zIndex: 10 }}
+                      className="bg-card relative flex cursor-grab items-center gap-2 overflow-hidden rounded-lg border p-2 text-sm active:cursor-grabbing"
+                    >
+                      <GripVerticalIcon className="text-muted-foreground size-4 shrink-0" />
+                      <span className="text-muted-foreground w-4 shrink-0 text-center text-xs tabular-nums">{i + 1}</span>
                       <div className="min-w-0 flex-1">
                         {c ? (
                           <>
@@ -380,10 +456,11 @@ export function Composer() {
                           <XIcon />
                         </Button>
                       </div>
-                    </li>
+                    </Reorder.Item>
                   );
                 })}
-              </ol>
+                </AnimatePresence>
+              </Reorder.Group>
             )}
           </CardContent>
           <CardFooter className="flex-col gap-2">

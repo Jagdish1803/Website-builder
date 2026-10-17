@@ -86,9 +86,16 @@ export function SiteCard({
   }
 
   return (
-    <Card className="group gap-0 overflow-hidden py-0 transition-shadow hover:shadow-md">
-      <a href={href} target="_blank" rel="noreferrer" className="block border-b" aria-label={`Open ${site.title}`}>
-        <PageThumb src={href} title={site.title} className="transition-opacity group-hover:opacity-90" />
+    <Card className="group hover:border-foreground/20 h-full gap-0 overflow-hidden py-0 transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-1 hover:shadow-xl motion-reduce:hover:translate-y-0">
+      <a href={href} target="_blank" rel="noreferrer" className="relative block overflow-hidden border-b" aria-label={`Open ${site.title}`}>
+        <PageThumb
+          src={href}
+          title={site.title}
+          className="transition-transform duration-700 ease-out group-hover:scale-[1.04] motion-reduce:group-hover:scale-100"
+        />
+        <span className="bg-background/90 absolute right-3 bottom-3 flex translate-y-2 items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium opacity-0 shadow-sm backdrop-blur transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          <ExternalLinkIcon className="size-3" /> Open
+        </span>
       </a>
       <div className="flex items-start gap-2 p-4">
         <div className="min-w-0 flex-1 space-y-1.5">
