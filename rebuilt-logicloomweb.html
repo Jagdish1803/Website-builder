@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLW â Web Design, Development &amp; SEO Studio</title>
+<meta name="description" content="We build websites from scratch, fix the ones that are broken, and get them ranking â clean code, honest pricing and a money-back guarantee, from Mumbai.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace']
+      }
+    }
+  }
+}
+</script>
+<style>
+  :root{
+    --bg:#F4F1EA; --bg2:#ECE8DE; --fg:#141412; --muted:#585650; --card:#FFFFFF;
+    --line:rgba(20,20,18,.12); --accent:#C9401A; --accent-fg:#FFFFFF; --soft:#F9E3D9;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0E0E0C; --bg2:#151513; --fg:#F2EFE7; --muted:#A9A69C; --card:#1A1A17;
+      --line:rgba(242,239,231,.12); --accent:#FF7A4D; --accent-fg:#140A05; --soft:#2A1810;
+    }
+  }
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+  body{background:var(--bg);color:var(--fg);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .muted{color:var(--muted)}
+  .card{background:var(--card);border:1px solid var(--line)}
+  .line{border-color:var(--line)}
+  .accent{color:var(--accent)}
+  .bg-accent{background:var(--accent);color:var(--accent-fg)}
+  .bg-alt{background:var(--bg2)}
+  .serif{font-family:"Instrument Serif",Georgia,serif;font-weight:400}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .eyebrow::before{content:"(";}
+  .eyebrow::after{content:")";}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+  .btn{display:inline-flex;align-items:center;gap:.6rem;border-radius:999px;padding:.85rem 1.4rem;font-weight:600;font-size:.95rem;transition:transform .2s ease, background .2s ease, color .2s ease}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:var(--fg);color:var(--bg)}
+  .btn-accent{background:var(--accent);color:var(--accent-fg)}
+  .btn-ghost{border:1px solid var(--line);color:var(--fg)}
+  .btn-ghost:hover{background:var(--card)}
+  .pill-img{display:inline-block;height:.78em;width:1.8em;border-radius:999px;overflow:hidden;vertical-align:middle;margin:0 .12em;transform:translateY(-.06em)}
+  .pill-img img{width:100%;height:100%;object-fit:cover}
+  .grain{background-image:radial-gradient(circle at 20% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 45%),radial-gradient(circle at 100% 30%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 40%)}
+  .marquee{display:flex;width:max-content;animation:marquee 40s linear infinite}
+  .marquee:hover{animation-play-state:paused}
+  @keyframes marquee{to{transform:translateX(-50%)}}
+  .work-card img{transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+  .work-card:hover img{transform:scale(1.04)}
+  details summary::-webkit-details-marker{display:none}
+  details[open] .plus{transform:rotate(45deg)}
+  .plus{transition:transform .25s ease}
+  [role=tab][aria-selected=true]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+  input,textarea{background:transparent;border-bottom:1px solid var(--line);color:var(--fg)}
+  input::placeholder,textarea::placeholder{color:var(--muted);opacity:.7}
+  input:focus,textarea:focus{outline:none;border-color:var(--accent)}
+  .skip{position:absolute;left:-9999px;top:1rem}
+  .skip:focus{left:1rem;z-index:100;background:var(--fg);color:var(--bg);padding:.6rem 1rem;border-radius:999px}
+  .check{flex:none;width:1.15rem;height:1.15rem;border-radius:999px;display:grid;place-items:center;background:var(--soft);color:var(--accent);margin-top:.15rem}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to content</a>
+
+<!-- Header -->
+<header class="sticky top-0 z-50 backdrop-blur-md" style="background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--line)">
+  <nav class="max-w-7xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between" aria-label="Primary">
+    <a href="#top" class="flex items-center gap-2 font-bold tracking-tight text-lg" aria-label="LLW home">
+      <span class="w-8 h-8 rounded-full bg-accent grid place-items-center text-xs font-mono">â³</span>LLW
+    </a>
+    <ul class="hidden md:flex items-center gap-8 text-sm font-medium">
+      <li><a class="hover:opacity-70" href="#works">Works</a></li>
+      <li><a class="hover:opacity-70" href="#services">Services</a></li>
+      <li><a class="hover:opacity-70" href="#about">About</a></li>
+      <li><a class="hover:opacity-70" href="#">Blog</a></li>
+    </ul>
+    <div class="flex items-center gap-2">
+      <a href="#contact" class="btn btn-primary !py-2 !px-4 text-sm">Contact <span aria-hidden="true">â</span></a>
+      <button id="menuBtn" class="md:hidden w-10 h-10 rounded-full border line grid place-items-center" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </nav>
+  <div id="mobileMenu" class="md:hidden hidden border-t line">
+    <ul class="px-5 py-4 grid gap-3 text-lg font-medium">
+      <li><a href="#works">Works</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#">Blog</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+<!-- Hero -->
+<section id="top" class="grain relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 pt-14 sm:pt-20 pb-16 sm:pb-24">
+    <div class="flex items-center gap-3 mb-8">
+      <div class="flex -space-x-2">
+        <img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Favatar-0.jpg&w=64&q=75" alt="Client portrait" class="w-9 h-9 rounded-full object-cover ring-2" style="--tw-ring-color:var(--bg)">
+        <img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Favatar-1.jpg&w=64&q=75" alt="Client portrait" class="w-9 h-9 rounded-full object-cover ring-2" style="--tw-ring-color:var(--bg)">
+        <img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Favatar-2.jpg&w=64&q=75" alt="Client portrait" class="w-9 h-9 rounded-full object-cover ring-2" style="--tw-ring-color:var(--bg)">
+        <img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Favatar-3.jpg&w=64&q=75" alt="Client portrait" class="w-9 h-9 rounded-full object-cover ring-2" style="--tw-ring-color:var(--bg)">
+        <img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Favatar-4.jpg&w=64&q=75" alt="Client portrait" class="w-9 h-9 rounded-full object-cover ring-2" style="--tw-ring-color:var(--bg)">
+      </div>
+      <p class="text-sm font-medium">Trusted by founders.</p>
+    </div>
+
+    <h1 class="font-semibold tracking-tight leading-[0.95] text-[13vw] sm:text-[10vw] lg:text-[8.2rem]">
+      <span class="sr-only">Websites built, fixed and ranked â from Mumbai, India.</span>
+      <span aria-hidden="true">
+        Websites <span class="pill-img"><img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Fpill-1.jpg&w=1920&q=75" alt=""></span><br>
+        <span class="serif italic accent">Built,</span> Fixed <span class="pill-img"><img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Fpill-2.jpg&w=1920&q=75" alt=""></span> &amp;<br>
+        Ranked <span class="serif italic font-normal muted text-[0.6em]">from</span> Mumbai,<br>
+        India <span class="pill-img"><img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Fpill-3.jpg&w=1920&q=75" alt=""></span>
+      </span>
+    </h1>
+
+    <div class="mt-12 grid md:grid-cols-12 gap-8 items-end">
+      <p class="md:col-span-6 lg:col-span-5 text-lg sm:text-xl muted leading-relaxed">
+        Custom sites built from scratch, broken ones fixed fast, and technical SEO that moves the needle â at honest prices, backed by a money-back guarantee.
+      </p>
+      <div class="md:col-span-6 lg:col-span-7 flex flex-wrap gap-3 md:justify-end">
+        <a href="#pricing" class="btn btn-accent">View Plans <span aria-hidden="true">â</span></a>
+        <a href="#fiverr" class="btn btn-ghost">See Fiverr Gigs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Statement -->
+<section class="border-y line">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28 grid lg:grid-cols-12 gap-8">
+    <p class="eyebrow lg:col-span-2 pt-3">LLW</p>
+    <p class="lg:col-span-10 text-3xl sm:text-5xl leading-[1.12] tracking-tight font-medium">
+      We build websites from scratch, fix the ones that are already broken, and get both of them ranking â <span class="serif italic accent">with clarity, speed, and no drama.</span>
+    </p>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28" aria-labelledby="testimonials-h">
+  <p class="eyebrow">Why clients love LLW</p>
+  <h2 id="testimonials-h" class="mt-3 text-5xl sm:text-7xl font-semibold tracking-tight">Testimonials</h2>
+
+  <div class="mt-12 grid lg:grid-cols-12 gap-6">
+    <dl class="lg:col-span-4 grid sm:grid-cols-3 lg:grid-cols-1 gap-4">
+      <div class="card rounded-3xl p-6">
+        <dt class="eyebrow !normal-case !tracking-normal before:content-none after:content-none">Projects Delivered</dt>
+        <dd class="mt-3 text-2xl font-semibold">Across industries</dd>
+      </div>
+      <div class="card rounded-3xl p-6">
+        <dt class="eyebrow !normal-case !tracking-normal before:content-none after:content-none">Client satisfaction rate</dt>
+        <dd class="mt-3 text-2xl font-semibold">Money-back backed</dd>
+      </div>
+      <div class="card rounded-3xl p-6">
+        <dt class="eyebrow !normal-case !tracking-normal before:content-none after:content-none">Average first reply</dt>
+        <dd class="mt-3 text-2xl font-semibold">Same working day</dd>
+      </div>
+    </dl>
+
+    <figure class="lg:col-span-8 rounded-3xl p-8 sm:p-12 flex flex-col justify-between bg-accent relative overflow-hidden min-h-[22rem]">
+      <svg class="absolute -right-10 -top-10 w-64 h-64 opacity-20" viewBox="0 0 100 100" aria-hidden="true"><text x="0" y="95" font-size="120" font-family="Georgia" fill="currentColor">â</text></svg>
+      <p class="font-mono text-sm opacity-80">01 / 03</p>
+      <blockquote class="serif text-3xl sm:text-5xl leading-[1.1] mt-6 relative">
+        âOur old site broke every second week. LLW rebuilt it in three weeks and it has not gone down since.â
+      </blockquote>
+      <figcaption class="mt-10 flex items-center gap-4">
+        <img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Favatar-1.jpg&w=96&q=75" alt="Portrait of Rohan Deshpande" class="w-14 h-14 rounded-full object-cover">
+        <span><span class="block font-semibold">Rohan Deshpande</span><span class="block text-sm opacity-80">Co-founder, NovaTech</span></span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- Works -->
+<section id="works" class="bg-alt py-20 sm:py-28" aria-labelledby="works-h">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8">
+    <div class="grid lg:grid-cols-12 gap-6 items-end">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">Portfolio</p>
+        <h2 id="works-h" class="mt-3 text-5xl sm:text-7xl font-semibold tracking-tight">Recent <span class="serif italic">Works</span></h2>
+      </div>
+      <p class="lg:col-span-5 muted text-lg">We have helped businesses across industries achieve their goals. Here are some of our selected works.</p>
+    </div>
+
+    <ul class="mt-14 grid gap-10">
+      <li>
+        <a href="#" class="work-card group grid lg:grid-cols-12 gap-6 lg:gap-10 items-center">
+          <div class="lg:col-span-7 rounded-3xl overflow-hidden aspect-[16/10]">
+            <img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Fwork-archin.jpg&w=1920&q=75" alt="Archin website project preview" class="w-full h-full object-cover" loading="lazy">
+          </div>
+          <div class="lg:col-span-5">
+            <p class="font-mono text-sm muted">01 / 03</p>
+            <h3 class="mt-2 text-4xl sm:text-5xl font-semibold tracking-tight group-hover:underline decoration-2 underline-offset-8">Archin <span aria-hidden="true" class="accent">â</span></h3>
+            <p class="mt-4 muted">We partner with businesses across industries to help them reach their goals. Here is a closer look at some of our selected work.</p>
+            <dl class="mt-6 grid grid-cols-2 gap-4 border-t line pt-5 text-sm">
+              <div><dt class="muted">Year</dt><dd class="font-medium">2025</dd></div>
+              <div><dt class="muted">Role</dt><dd class="font-medium">Lead Designer</dd></div>
+              <div class="col-span-2"><dt class="muted mb-2">Services</dt><dd class="flex flex-wrap gap-2">
+                <span class="card rounded-full px-3 py-1">Website Design</span><span class="card rounded-full px-3 py-1">Product Design</span><span class="card rounded-full px-3 py-1">Branding</span><span class="card rounded-full px-3 py-1">Development</span>
+              </dd></div>
+            </dl>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="work-card group grid lg:grid-cols-12 gap-6 lg:gap-10 items-center">
+          <div class="lg:col-span-7 lg:order-2 rounded-3xl overflow-hidden aspect-[16/10]">
+            <img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Fwork-vntnr.jpg&w=1920&q=75" alt="VNTNR brand project preview" class="w-full h-full object-cover" loading="lazy">
+          </div>
+          <div class="lg:col-span-5 lg:order-1">
+            <p class="font-mono text-sm muted">02 / 03</p>
+            <h3 class="mt-2 text-4xl sm:text-5xl font-semibold tracking-tight group-hover:underline decoration-2 underline-offset-8">VNTNR <span aria-hidden="true" class="accent">â</span></h3>
+            <p class="mt-4 muted">We have partnered with businesses across various industries to help them achieve their goals.</p>
+            <dl class="mt-6 grid grid-cols-2 gap-4 border-t line pt-5 text-sm">
+              <div><dt class="muted">Year</dt><dd class="font-medium">2018</dd></div>
+              <div><dt class="muted">Role</dt><dd class="font-medium">Logo Designer</dd></div>
+              <div class="col-span-2"><dt class="muted mb-2">Services</dt><dd class="flex flex-wrap gap-2">
+                <span class="card rounded-full px-3 py-1">Designing</span><span class="card rounded-full px-3 py-1">Branding</span><span class="card rounded-full px-3 py-1">Redesigning</span><span class="card rounded-full px-3 py-1">Development</span>
+              </dd></div>
+            </dl>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="work-card group grid lg:grid-cols-12 gap-6 lg:gap-10 items-center">
+          <div class="lg:col-span-7 rounded-3xl overflow-hidden aspect-[16/10]">
+            <img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Fwork-aeorim.jpg&w=1920&q=75" alt="Aeorim website project preview" class="w-full h-full object-cover" loading="lazy">
+          </div>
+          <div class="lg:col-span-5">
+            <p class="font-mono text-sm muted">03 / 03</p>
+            <h3 class="mt-2 text-4xl sm:text-5xl font-semibold tracking-tight group-hover:underline decoration-2 underline-offset-8">Aeorim <span aria-hidden="true" class="accent">â</span></h3>
+            <p class="mt-4 muted">We have collaborated with companies from diverse sectors to turn their visions into reality. Here is a look at some of our featured work.</p>
+            <dl class="mt-6 grid grid-cols-2 gap-4 border-t line pt-5 text-sm">
+              <div><dt class="muted">Year</dt><dd class="font-medium">2023</dd></div>
+              <div><dt class="muted">Role</dt><dd class="font-medium">Website Designer</dd></div>
+              <div class="col-span-2"><dt class="muted mb-2">Services</dt><dd class="flex flex-wrap gap-2">
+                <span class="card rounded-full px-3 py-1">Branding</span><span class="card rounded-full px-3 py-1">Revamp</span><span class="card rounded-full px-3 py-1">Development</span><span class="card rounded-full px-3 py-1">Designing</span>
+              </dd></div>
+            </dl>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- Services -->
+<section id="services" class="max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28" aria-labelledby="services-h">
+  <p class="eyebrow">Services</p>
+  <h2 id="services-h" class="mt-3 text-5xl sm:text-7xl font-semibold tracking-tight">What <span class="serif italic">we do</span></h2>
+
+  <div class="mt-10 flex flex-wrap gap-2" role="tablist" aria-label="Services">
+    <button role="tab" id="tab-0" aria-controls="panel-0" aria-selected="true" class="rounded-full border line px-5 py-2.5 text-sm font-medium transition">Website Development</button>
+    <button role="tab" id="tab-1" aria-controls="panel-1" aria-selected="false" tabindex="-1" class="rounded-full border line px-5 py-2.5 text-sm font-medium transition">Fixes &amp; Maintenance</button>
+    <button role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false" tabindex="-1" class="rounded-full border line px-5 py-2.5 text-sm font-medium transition">SEO &amp; Performance</button>
+    <button role="tab" id="tab-3" aria-controls="panel-3" aria-selected="false" tabindex="-1" class="rounded-full border line px-5 py-2.5 text-sm font-medium transition">WordPress &amp; Shopify</button>
+  </div>
+
+  <div class="mt-8">
+    <div role="tabpanel" id="panel-0" aria-labelledby="tab-0" class="card rounded-3xl overflow-hidden grid md:grid-cols-2">
+      <img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Fservice-web.jpg&w=1920&q=75" alt="Website development work in progress" class="w-full h-64 md:h-full object-cover" loading="lazy">
+      <div class="p-8 sm:p-12 flex flex-col">
+        <span class="font-mono text-sm accent">01</span>
+        <h3 class="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight">Website Development</h3>
+        <p class="mt-4 muted text-lg">A website built from scratch â structure, design, code and launch. Fast, mobile-first and yours to own, with no page-builder lock-in.</p>
+        <ul class="mt-8 flex flex-wrap gap-2 text-sm"><li class="bg-alt rounded-full px-4 py-2">Next.js &amp; React</li><li class="bg-alt rounded-full px-4 py-2">Responsive Build</li><li class="bg-alt rounded-full px-4 py-2">Domain &amp; Deploy</li></ul>
+      </div>
+    </div>
+    <div role="tabpanel" id="panel-1" aria-labelledby="tab-1" class="card rounded-3xl overflow-hidden grid md:grid-cols-2" hidden>
+      <img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Fservice-fix.jpg&w=1920&q=75" alt="Website fixes and maintenance" class="w-full h-64 md:h-full object-cover" loading="lazy">
+      <div class="p-8 sm:p-12 flex flex-col">
+        <span class="font-mono text-sm accent">02</span>
+        <h3 class="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight">Fixes &amp; Maintenance</h3>
+        <p class="mt-4 muted text-lg">Something broken, slow or throwing errors? We diagnose it, fix it and tell you plainly what went wrong â then keep it healthy month to month.</p>
+        <ul class="mt-8 flex flex-wrap gap-2 text-sm"><li class="bg-alt rounded-full px-4 py-2">Bug Fixing</li><li class="bg-alt rounded-full px-4 py-2">Broken Layouts</li><li class="bg-alt rounded-full px-4 py-2">Ongoing Care</li></ul>
+      </div>
+    </div>
+    <div role="tabpanel" id="panel-2" aria-labelledby="tab-2" class="card rounded-3xl overflow-hidden grid md:grid-cols-2" hidden>
+      <img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Fservice-seo.jpg&w=1920&q=75" alt="SEO and performance analysis" class="w-full h-64 md:h-full object-cover" loading="lazy">
+      <div class="p-8 sm:p-12 flex flex-col">
+        <span class="font-mono text-sm accent">03</span>
+        <h3 class="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight">SEO &amp; Performance</h3>
+        <p class="mt-4 muted text-lg">Rankings follow the fundamentals: clean markup, fast pages, correct metadata. We fix all three and hand you a before/after report.</p>
+        <ul class="mt-8 flex flex-wrap gap-2 text-sm"><li class="bg-alt rounded-full px-4 py-2">Technical SEO</li><li class="bg-alt rounded-full px-4 py-2">Core Web Vitals</li><li class="bg-alt rounded-full px-4 py-2">Schema &amp; Sitemaps</li></ul>
+      </div>
+    </div>
+    <div role="tabpanel" id="panel-3" aria-labelledby="tab-3" class="card rounded-3xl overflow-hidden grid md:grid-cols-2" hidden>
+      <img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Fservice-cms.jpg&w=1920&q=75" alt="WordPress and Shopify store work" class="w-full h-64 md:h-full object-cover" loading="lazy">
+      <div class="p-8 sm:p-12 flex flex-col">
+        <span class="font-mono text-sm accent">04</span>
+        <h3 class="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight">WordPress &amp; Shopify</h3>
+        <p class="mt-4 muted text-lg">CMS and store work done carefully â custom sections, product pages, checkout tweaks and migrations that do not break what already works.</p>
+        <ul class="mt-8 flex flex-wrap gap-2 text-sm"><li class="bg-alt rounded-full px-4 py-2">Theme Customisation</li><li class="bg-alt rounded-full px-4 py-2">Ecommerce</li><li class="bg-alt rounded-full px-4 py-2">Migrations</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" class="bg-alt py-20 sm:py-28" aria-labelledby="about-h">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-12 gap-10 items-center">
+    <div class="lg:col-span-5 rounded-3xl overflow-hidden aspect-[4/5] relative">
+      <img src="https://logicloomweb.com/_next/image?url=%2Fimages%2Ffounder.jpg&w=1920&q=75" alt="The founder of LLW studio" class="w-full h-full object-cover" loading="lazy">
+      <span class="absolute bottom-4 left-4 bg-accent rounded-full px-4 py-2 text-sm font-semibold">Mumbai, India</span>
+    </div>
+    <div class="lg:col-span-7">
+      <p class="eyebrow">Intro</p>
+      <h2 id="about-h" class="mt-3 text-5xl sm:text-7xl font-semibold tracking-tight">Meet the <span class="serif italic">Studio</span></h2>
+      <p class="mt-8 text-xl sm:text-2xl leading-relaxed">LLW is a small studio building websites and design systems for startups and creative teams. We work the way the name reads â <strong class="accent font-semibold">logic first, then craft</strong>: structure the problem, then weave the interface around it.</p>
+      <p class="mt-6 text-lg muted">Based in Mumbai, shipping for teams anywhere.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Awards -->
+<section class="max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28" aria-labelledby="awards-h">
+  <p class="eyebrow">Awards</p>
+  <h2 id="awards-h" class="mt-3 text-5xl sm:text-7xl font-semibold tracking-tight">Awards &amp; <span class="serif italic">Wins</span></h2>
+  <ul class="mt-12 border-t line">
+    <li class="grid grid-cols-12 gap-4 py-6 border-b line items-center hover:bg-[var(--card)] transition px-2 -mx-2 rounded-lg">
+      <p class="col-span-12 sm:col-span-3 font-semibold text-lg">Awwwards</p>
+      <p class="col-span-9 sm:col-span-6 muted">SOTY 2023 â 1st Winner</p>
+      <p class="col-span-3 text-right font-mono text-sm">Archin</p>
+    </li>
+    <li class="grid grid-cols-12 gap-4 py-6 border-b line items-center hover:bg-[var(--card)] transition px-2 -mx-2 rounded-lg">
+      <p class="col-span-12 sm:col-span-3 font-semibold text-lg">CSS Awards</p>
+      <p class="col-span-9 sm:col-span-6 muted">Top 5 Best of eCommerce Websites 2023</p>
+      <p class="col-span-3 text-right font-mono text-sm">VNTNR</p>
+    </li>
+    <li class="grid grid-cols-12 gap-4 py-6 border-b line items-center hover:bg-[var(--card)] transition px-2 -mx-2 rounded-lg">
+      <p class="col-span-12 sm:col-span-3 font-semibold text-lg">CSS Awards</p>
+      <p class="col-span-9 sm:col-span-6 muted">Winner â US Behance Portfolio Review 2024</p>
+      <p class="col-span-3 text-right font-mono text-sm">Aeorim</p>
+    </li>
+    <li class="grid grid-cols-12 gap-4 py-6 border-b line items-center hover:bg-[var(--card)] transition px-2 -mx-2 rounded-lg">
+      <p class="col-span-12 sm:col-span-3 font-semibold text-lg">Dribble</p>
+      <p class="col-span-9 sm:col-span-6 muted">Top 10 Best of Mobile App Design 2024</p>
+      <p class="col-span-3 text-right font-mono text-sm">Swat Co.</p>
+    </li>
+    <li class="grid grid-cols-12 gap-4 py-6 border-b line items-center hover:bg-[var(--card)] transition px-2 -mx-2 rounded-lg">
+      <p class="col-span-12 sm:col-span-3 font-semibold text-lg">FWA Awards</p>
+      <p class="col-span-9 sm:col-span-6 muted">Winner â Best of Architecture Website 2025</p>
+      <p class="col-span-3 text-right font-mono text-sm">Unerio</p>
+    </li>
+  </ul>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="bg-alt py-20 sm:py-28" aria-labelledby="pricing-h">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8">
+    <p class="eyebrow">Pricing Plan</p>
+    <h2 id="pricing-h" class="mt-3 text-5xl sm:text-7xl font-semibold tracking-tight">Explore <span class="serif italic">Pricing</span></h2>
+
+    <div class="mt-12 grid lg:grid-cols-3 gap-5 items-stretch">
+      <!-- Quick Fix -->
+      <article class="card rounded-3xl p-8 flex flex-col">
+        <h3 class="text-2xl font-semibold">Quick Fix</h3>
+        <p class="mt-3 muted">For one specific problem â a broken page, a layout that collapses on mobile, an error you cannot trace. Priced per fix, not per hour.</p>
+        <div class="mt-8 flex items-end justify-between border-y line py-5">
+          <div><p class="text-xs muted uppercase tracking-wider">From</p><p class="text-5xl font-semibold tracking-tight">$39</p></div>
+          <div class="text-right"><p class="text-xs muted uppercase tracking-wider">Delivery Time</p><p class="font-medium">1-3 days</p></div>
+        </div>
+        <ul class="mt-6 space-y-3 text-[0.95rem] flex-1">
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>One bug, error or broken layout fixed</li>
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>Root cause explained in plain English</li>
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>Re-tested on mobile, tablet and desktop</li>
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>100% money-back guarantee</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost mt-8 justify-center">Get Started</a>
+      </article>
+
+      <!-- Launch Plan -->
+      <article class="rounded-3xl p-8 flex flex-col relative lg:-my-4 shadow-2xl" style="background:var(--fg);color:var(--bg)">
+        <span class="absolute top-6 right-6 bg-accent rounded-full px-3 py-1 text-xs font-semibold">Most popular</span>
+        <h3 class="text-2xl font-semibold">Launch Plan</h3>
+        <p class="mt-3 opacity-75">A complete website built from scratch â structure, design, code, content wiring and go-live. The plan most new clients start on.</p>
+        <div class="mt-8 flex items-end justify-between border-y py-5" style="border-color:color-mix(in srgb,var(--bg) 20%,transparent)">
+          <div><p class="text-xs opacity-70 uppercase tracking-wider">Starting at</p><p class="text-5xl font-semibold tracking-tight">$249</p></div>
+          <div class="text-right"><p class="text-xs opacity-70 uppercase tracking-wider">Delivery Time</p><p class="font-medium">2-4 weeks</p></div>
+        </div>
+        <ul class="mt-6 space-y-3 text-[0.95rem] flex-1">
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>Up to 6 custom-designed pages</li>
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>Built in Next.js or WordPress â your call</li>
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>On-page SEO and speed pass included</li>
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>Domain, hosting and deployment handled</li>
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>30 days of free fixes after launch</li>
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>100% money-back guarantee</li>
+        </ul>
+        <a href="#contact" class="btn btn-accent mt-8 justify-center">Get Started <span aria-hidden="true">â</span></a>
+      </article>
+
+      <!-- Growth Retainer -->
+      <article class="card rounded-3xl p-8 flex flex-col">
+        <h3 class="text-2xl font-semibold">Growth Retainer</h3>
+        <p class="mt-3 muted">Ongoing care once you are live â SEO work, new sections, speed monitoring and a fixed number of change requests each month.</p>
+        <div class="mt-8 flex items-end justify-between border-y line py-5">
+          <div><p class="text-xs muted uppercase tracking-wider">Monthly</p><p class="text-5xl font-semibold tracking-tight">$199<span class="text-lg muted font-normal">/month</span></p></div>
+          <div class="text-right"><p class="text-xs muted uppercase tracking-wider">Delivery Time</p><p class="font-medium">Monthly</p></div>
+        </div>
+        <ul class="mt-6 space-y-3 text-[0.95rem] flex-1">
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>Unlimited small fixes and content edits</li>
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>Monthly technical SEO and speed report</li>
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>New sections and pages as you need them</li>
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>Priority reply, pause or cancel anytime</li>
+          <li class="flex gap-3"><span class="check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></span>100% money-back guarantee</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost mt-8 justify-center">Get Started</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Fiverr -->
+<section id="fiverr" class="max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28" aria-labelledby="fiverr-h">
+  <div class="grid lg:grid-cols-12 gap-6 items-end">
+    <div class="lg:col-span-7">
+      <p class="eyebrow">Also on Fiverr</p>
+      <h2 id="fiverr-h" class="mt-3 text-5xl sm:text-7xl font-semibold tracking-tight">Hire Us on <span class="serif italic">Fiverr</span></h2>
+    </div>
+    <div class="lg:col-span-5">
+      <p class="muted text-lg">Prefer a marketplace? The same team, the same code â booked as a single fixed-price gig, with Fiverr holding the payment until you approve the work.</p>
+      <a href="#" class="btn btn-ghost mt-5">View Fiverr Profile <span aria-hidden="true">â</span></a>
+    </div>
+  </div>
+
+  <div class="mt-12 grid md:grid-cols-2 gap-5">
+    <a href="#" class="card rounded-3xl p-8 flex flex-col group hover:-translate-y-1 transition">
+      <span class="font-mono text-xs muted">Gig 01</span>
+      <h3 class="mt-3 text-2xl font-semibold leading-snug group-hover:underline underline-offset-4">I will design and develop a responsive business website</h3>
+      <p class="mt-3 muted flex-1">A complete website built from scratch â design, build, mobile-responsive, connected to your domain and live.</p>
+      <div class="mt-8 flex justify-between border-t line pt-5">
+        <div><p class="text-xs muted uppercase tracking-wider">Delivery</p><p class="font-medium">5 days</p></div>
+        <div class="text-right"><p class="text-xs muted uppercase tracking-wider">Starting at</p><p class="text-3xl font-semibold">$45</p></div>
+      </div>
+    </a>
+    <a href="#" class="card rounded-3xl p-8 flex flex-col group hover:-translate-y-1 transition">
+      <span class="font-mono text-xs muted">Gig 02</span>
+      <h3 class="mt-3 text-2xl font-semibold leading-snug group-hover:underline underline-offset-4">I will fix any website bug, error or broken layout</h3>
+      <p class="mt-3 muted flex-1">Broken pages, plugin conflicts, PHP or JavaScript errors, layouts that fall apart on mobile â diagnosed and fixed.</p>
+      <div class="mt-8 flex justify-between border-t line pt-5">
+        <div><p class="text-xs muted uppercase tracking-wider">Delivery</p><p class="font-medium">1 day</p></div>
+        <div class="text-right"><p class="text-xs muted uppercase tracking-wider">Starting at</p><p class="text-3xl font-semibold">$15</p></div>
+      </div>
+    </a>
+  </div>
+
+  <aside class="mt-5 rounded-3xl p-8 sm:p-12 bg-accent grid md:grid-cols-12 gap-6 items-center relative overflow-hidden">
+    <svg class="absolute -right-16 -bottom-16 w-72 h-72 opacity-15" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="3"/><path d="M30 52l13 13 27-30" fill="none" stroke="currentColor" stroke-width="6"/></svg>
+    <div class="md:col-span-8 relative">
+      <p class="font-mono text-xs uppercase tracking-widest opacity-80">Our promise</p>
+      <h3 class="mt-3 text-3xl sm:text-5xl serif">100% money-back guarantee</h3>
+      <p class="mt-4 text-lg opacity-90 max-w-2xl">If you are not satisfied with the work we deliver, you get your money back â no arguments, no paperwork. We would rather refund you than hand over something you are not happy to launch.</p>
+    </div>
+    <div class="md:col-span-4 md:text-right relative">
+      <a href="#contact" class="btn btn-primary">Start a Project <span aria-hidden="true">â</span></a>
+    </div>
+  </aside>
+</section>
+
+<!-- FAQ -->
+<section class="bg-alt py-20 sm:py-28" aria-labelledby="faq-h">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-12 gap-10">
+    <div class="lg:col-span-4">
+      <p class="eyebrow">FAQs</p>
+      <h2 id="faq-h" class="mt-3 text-5xl sm:text-6xl font-semibold tracking-tight">Your Questions, <span class="serif italic">Answered</span></h2>
+      <p class="mt-5 muted text-lg">Helping you understand our process and offerings at LLW.</p>
+    </div>
+    <div class="lg:col-span-8 space-y-3">
+      <details class="card rounded-2xl group">
+        <summary class="cursor-pointer list-none flex items-center justify-between gap-4 p-6"><h3 class="text-lg font-semibold">Do you only design, or do you build the website too?</h3><span class="plus text-2xl accent" aria-hidden="true">+</span></summary>
+        <p class="px-6 pb-6 muted">We do both. Every site is built from scratch â structure, design, code and launch â in Next.js or WordPress, with domain, hosting and deployment handled.</p>
+      </details>
+      <details class="card rounded-2xl" open>
+        <summary class="cursor-pointer list-none flex items-center justify-between gap-4 p-6"><h3 class="text-lg font-semibold">Can you fix an existing site you did not build?</h3><span class="plus text-2xl accent" aria-hidden="true">+</span></summary>
+        <p class="px-6 pb-6 muted">Yes, that is a large part of what we do. Send us the URL and access, and we come back the same working day with what is wrong, what it costs and how long it takes.</p>
+      </details>
+      <details class="card rounded-2xl">
+        <summary class="cursor-pointer list-none flex items-center justify-between gap-4 p-6"><h3 class="text-lg font-semibold">Do you handle SEO as well?</h3><span class="plus text-2xl accent" aria-hidden="true">+</span></summary>
+        <p class="px-6 pb-6 muted">Yes. Technical SEO, Core Web Vitals, schema and sitemaps â clean markup, fast pages and correct metadata, with a before/after report.</p>
+      </details>
+      <details class="card rounded-2xl">
+        <summary class="cursor-pointer list-none flex items-center justify-between gap-4 p-6"><h3 class="text-lg font-semibold">You are on Fiverr too â should I book there or here?</h3><span class="plus text-2xl accent" aria-hidden="true">+</span></summary>
+        <p class="px-6 pb-6 muted">Either works â it is the same team and the same code. Fiverr suits a single fixed-price gig with the payment held until you approve; booking direct suits larger builds and ongoing retainers.</p>
+      </details>
+      <details class="card rounded-2xl">
+        <summary class="cursor-pointer list-none flex items-center justify-between gap-4 p-6"><h3 class="text-lg font-semibold">What if I am not satisfied with the work?</h3><span class="plus text-2xl accent" aria-hidden="true">+</span></summary>
+        <p class="px-6 pb-6 muted">You get your money back â no arguments, no paperwork. Every plan carries a 100% money-back guarantee.</p>
+      </details>
+      <details class="card rounded-2xl">
+        <summary class="cursor-pointer list-none flex items-center justify-between gap-4 p-6"><h3 class="text-lg font-semibold">How affordable is this really?</h3><span class="plus text-2xl accent" aria-hidden="true">+</span></summary>
+        <p class="px-6 pb-6 muted">Quick fixes start at $39, full websites at $249, and ongoing care is $199/month. On Fiverr, gigs start from $15.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28" aria-labelledby="contact-h">
+  <div class="grid lg:grid-cols-12 gap-10">
+    <div class="lg:col-span-5">
+      <p class="eyebrow">Let's Connect</p>
+      <h2 id="contact-h" class="mt-3 text-5xl sm:text-7xl font-semibold tracking-tight leading-[0.95]">Got a project <span class="serif italic accent">in mind?</span></h2>
+      <p class="mt-6 text-lg muted">Let's make something happen together.</p>
+      <a href="mailto:logicloomweb@gmail.com" class="mt-8 inline-flex items-center gap-2 text-lg font-medium underline underline-offset-4 decoration-1 hover:decoration-2">logicloomweb@gmail.com <span class="accent" aria-hidden="true">â³</span></a>
+    </div>
+    <form class="lg:col-span-7 card rounded-3xl p-8 sm:p-10 grid gap-8" action="mailto:logicloomweb@gmail.com" method="post" enctype="text/plain">
+      <div class="grid sm:grid-cols-2 gap-8">
+        <div>
+          <label for="name" class="text-sm font-medium">Your Name</label>
+          <input id="name" name="name" type="text" autocomplete="name" required placeholder="Jane Doe" class="mt-2 w-full py-3 text-lg">
+        </div>
+        <div>
+          <label for="email" class="text-sm font-medium">Your Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required placeholder="jane@company.com" class="mt-2 w-full py-3 text-lg">
+        </div>
+      </div>
+      <div>
+        <label for="desc" class="text-sm font-medium">Project Description</label>
+        <textarea id="desc" name="description" rows="4" required placeholder="Tell us what you need built, fixed or rankedâ¦" class="mt-2 w-full py-3 text-lg resize-y"></textarea>
+      </div>
+      <button type="submit" class="btn btn-accent justify-self-start">Send Now! <span aria-hidden="true">â</span></button>
+    </form>
+  </div>
+</section>
+
+<!-- Email marquee -->
+<div class="border-y line overflow-hidden py-6" aria-label="Email us at logicloomweb@gmail.com">
+  <div class="marquee" aria-hidden="true">
+    <a href="mailto:logicloomweb@gmail.com" tabindex="-1" class="text-5xl sm:text-7xl font-semibold tracking-tight whitespace-nowrap px-6">logicloomweb@gmail.com <span class="accent">â³</span></a>
+    <a href="mailto:logicloomweb@gmail.com" tabindex="-1" class="text-5xl sm:text-7xl serif italic whitespace-nowrap px-6">logicloomweb@gmail.com <span class="accent not-italic">â³</span></a>
+    <a href="mailto:logicloomweb@gmail.com" tabindex="-1" class="text-5xl sm:text-7xl font-semibold tracking-tight whitespace-nowrap px-6">logicloomweb@gmail.com <span class="accent">â³</span></a>
+    <a href="mailto:logicloomweb@gmail.com" tabindex="-1" class="text-5xl sm:text-7xl serif italic whitespace-nowrap px-6">logicloomweb@gmail.com <span class="accent not-italic">â³</span></a>
+  </div>
+</div>
+</main>
+
+<!-- Footer -->
+<footer class="max-w-7xl mx-auto px-5 sm:px-8 pt-16 pb-10">
+  <div class="grid md:grid-cols-12 gap-10">
+    <div class="md:col-span-5">
+      <a href="#top" class="flex items-center gap-2 font-bold text-2xl"><span class="w-9 h-9 rounded-full bg-accent grid place-items-center text-sm font-mono">â³</span>LLW</a>
+      <p class="mt-4 muted max-w-sm">We build websites from scratch, fix the ones that are broken, and get them ranking â clean code, honest pricing and a money-back guarantee, from Mumbai.</p>
+      <a href="mailto:logicloomweb@gmail.com" class="mt-4 inline-block font-medium underline underline-offset-4">logicloomweb@gmail.com</a>
+    </div>
+    <nav class="md:col-span-7 grid grid-cols-3 gap-6 text-sm" aria-label="Footer">
+      <div><p class="eyebrow before:content-none after:content-none mb-4">Navigation</p>
+        <ul class="space-y-2"><li><a href="#about" class="hover:accent">About</a></li><li><a href="#works">Works</a></li><li><a href="#services">Services</a></li><li><a href="#">Blog</a></li></ul></div>
+      <div><p class="eyebrow before:content-none after:content-none mb-4">Social</p>
+        <ul class="space-y-2"><li><a href="#">Fiverr</a></li><li><a href="#">Twitter(X)</a></li><li><a href="#">LinkedIn</a></li><li><a href="#">Dribble</a></li></ul></div>
+      <div><p class="eyebrow before:content-none after:content-none mb-4">Legals</p>
+        <ul class="space-y-2"><li><a href="#">Privacy Policy</a></li><li><a href="#">Term of Service</a></li></ul></div>
+    </nav>
+  </div>
+  <div class="mt-14 pt-6 border-t line flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between text-sm muted">
+    <p>Â© 2026 LLW. All rights reserved.</p>
+    <p class="font-mono">Mumbai â <span id="clock">--:--:--</span></p>
+    <button id="toTop" class="btn btn-ghost !py-2 !px-4 text-sm" style="color:var(--fg)">Back to top <span aria-hidden="true">â</span></button>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu
+  const mb = document.getElementById('menuBtn'), mm = document.getElementById('mobileMenu');
+  mb.addEventListener('click', () => {
+    const open = mb.getAttribute('aria-expanded') === 'true';
+    mb.setAttribute('aria-expanded', String(!open));
+    mm.classList.toggle('hidden', open);
+  });
+  mm.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { mm.classList.add('hidden'); mb.setAttribute('aria-expanded','false'); }));
+
+  // Tabs
+  const tabs = [...document.querySelectorAll('[role=tab]')];
+  function select(i){
+    tabs.forEach((t, j) => {
+      const on = i === j;
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    tabs[i].focus();
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(i));
+    t.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') select((i + 1) % tabs.length);
+      if (e.key === 'ArrowLeft') select((i - 1 + tabs.length) % tabs.length);
+    });
+  });
+
+  // Mumbai clock
+  const clock = document.getElementById('clock');
+  const fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+  const tick = () => clock.textContent = fmt.format(new Date());
+  tick(); setInterval(tick, 1000);
+
+  // Back to top
+  document.getElementById('toTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
+</body>
+</html>
