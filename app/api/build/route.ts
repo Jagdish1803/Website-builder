@@ -1,16 +1,12 @@
 import Anthropic from "@anthropic-ai/sdk";
 import * as cheerio from "cheerio";
-import { randomUUID } from "node:crypto";
-import { mkdir, writeFile } from "node:fs/promises";
-import path from "node:path";
-import { pageSkeleton } from "../../lib/design-system";
-import { joinSections, parseSections, saveComponents } from "../../lib/sections";
+import { parseSections, saveComponents } from "../../lib/sections";
+import { createSite } from "../../lib/sites";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
 
 const MODEL = "claude-opus-5-5";
-const SITES_DIR = path.join(process.cwd(), "sites");
 
 function normalizeUrl(raw: string): string {
   const trimmed = raw.trim();
@@ -108,7 +104,7 @@ export async function POST(req: Request) {
 
     const target = normalizeUrl(body.url);
     const html = await fetchHtml(target);
-    const site = extract(html, target);
+    const page = extract(html, target);
 
     const client = new Anthropic({
       defaultHeaders: process.env.ANTHROPIC_WORKSPACE_ID
@@ -119,14 +115,14 @@ export async function POST(req: Request) {
     const userContent = `Rebuild this website as reusable sections.
 
 URL: ${target}
-Title: ${site.title}
-Description: ${site.description}
+Title: ${page.title}
+Description: ${page.description}
 
 Content (tagged by source element):
-${site.content}
+${page.content}
 
 Original image URLs (reuse these where they fit):
-${site.images.join("\n") || "(none found)"}`;
+${page.images.join("\n") || "(none found)"}`;
 
     const stream = client.messages.stream({
       model: MODEL,
@@ -161,18 +157,19 @@ ${site.images.join("\n") || "(none found)"}`;
       sections = [{ type: "page", label: "Full page", html: raw }];
     }
 
-    const full = pageSkeleton(joinSections(sections), site.title);
-
-    const id = randomUUID().slice(0, 8);
-    await mkdir(SITES_DIR, { recursive: true });
-    await writeFile(path.join(SITES_DIR, `${id}.html`), full, "utf8");
-    const saved = await saveComponents(sections, target);
+    const comps = await saveComponents(sections, target);
+    const site = await createSite({
+      title: page.title || new URL(target).hostname,
+      kind: "rebuild",
+      sourceUrl: target,
+      componentIds: comps.map((c) => c.id),
+    });
 
     return Response.json({
-      id,
-      url: `/s/${id}`,
-      html: full,
-      meta: { title: site.title, images: site.images.length, sections: saved },
+      site,
+      url: `/s/${site.id}`,
+      sections: comps.map(({ id, type, label }) => ({ id, type, label })),
+      images: page.images.length,
     });
   } catch (err) {
     if (err instanceof Anthropic.AuthenticationError) {

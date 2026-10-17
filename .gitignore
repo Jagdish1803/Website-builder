@@ -1,7 +1,8 @@
 node_modules/
 .next/
+data/
+# pre-v2 storage (raw HTML pages / section JSON) — still readable as a fallback
 sites/
-components/
 .env
 .env.local
 *.tsbuildinfo
