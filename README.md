@@ -50,8 +50,8 @@ classes), which the build prompt tells Claude to use on every section.
    `/preview?ids=a,b,c` for an unsaved composition. No HTML is stored, so a
    change to a section or the design system shows up on every site that uses it.
 
-Pages built before this change (`sites/<id>.html`) still open at `/s/<id>`. To
-keep old library sections, move `components/*.json` into `data/components/`.
+Pages built before this change (`sites/<id>.html`) still open at `/s/<id>`, and
+sections stored the old way as `components/<id>.json` still show up in the library.
 
 ## API
 

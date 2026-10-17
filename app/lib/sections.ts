@@ -17,6 +17,10 @@ export type ComponentMeta = Omit<Component, "html">;
 export type ParsedSection = { type: string; label: string; html: string };
 
 const COMPONENTS_DIR = path.join(process.cwd(), "data", "components");
+// Sections saved before the move to data/ (and any committed there) live next to
+// the UI code. They're read, listed and deletable, but new ones go to COMPONENTS_DIR.
+const LEGACY_COMPONENTS_DIR = path.join(process.cwd(), "components");
+const READ_DIRS = [COMPONENTS_DIR, LEGACY_COMPONENTS_DIR];
 
 const SECTION_RE =
   /<!--\s*SECTION\s+type="([^"]*)"\s+label="([^"]*)"\s*-->([\s\S]*?)<!--\s*\/SECTION\s*-->/gi;
@@ -54,11 +58,14 @@ export function safeId(id: string): boolean {
 
 export async function getComponent(id: string): Promise<Component | null> {
   if (!safeId(id)) return null;
-  try {
-    return JSON.parse(await readFile(path.join(COMPONENTS_DIR, `${id}.json`), "utf8")) as Component;
-  } catch {
-    return null;
+  for (const dir of READ_DIRS) {
+    try {
+      return JSON.parse(await readFile(path.join(dir, `${id}.json`), "utf8")) as Component;
+    } catch {
+      // not in this dir — try the next
+    }
   }
+  return null;
 }
 
 /** Components in the picked order (skips missing ids). */
@@ -69,19 +76,12 @@ export async function getComponents(ids: string[]): Promise<Component[]> {
 
 /** All saved components, newest first. */
 export async function listComponents(): Promise<Component[]> {
-  try {
-    const files = await readdir(COMPONENTS_DIR);
-    const comps = await Promise.all(
-      files
-        .filter((f) => f.endsWith(".json"))
-        .map((f) => getComponent(f.replace(/\.json$/, ""))),
-    );
-    return comps
-      .filter((c): c is Component => c !== null)
-      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-  } catch {
-    return [];
-  }
+  const listings = await Promise.all(READ_DIRS.map((dir) => readdir(dir).catch(() => [] as string[])));
+  const ids = new Set(listings.flat().filter((f) => f.endsWith(".json")).map((f) => f.replace(/\.json$/, "")));
+  const comps = await Promise.all([...ids].map(getComponent));
+  return comps
+    .filter((c): c is Component => c !== null)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 export function toMeta({ html: _html, ...meta }: Component): ComponentMeta {
@@ -90,10 +90,13 @@ export function toMeta({ html: _html, ...meta }: Component): ComponentMeta {
 
 export async function deleteComponent(id: string): Promise<boolean> {
   if (!safeId(id)) return false;
-  try {
-    await rm(path.join(COMPONENTS_DIR, `${id}.json`));
-    return true;
-  } catch {
-    return false;
+  for (const dir of READ_DIRS) {
+    try {
+      await rm(path.join(dir, `${id}.json`));
+      return true;
+    } catch {
+      // not in this dir — try the next
+    }
   }
+  return false;
 }
